@@ -2,16 +2,18 @@ import requests
 
 from sprites import *
 
-
 class Game:
     def __init__(self):
+        self.playing = None
         self.board = None
+        self.lives = None
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
 
     def new(self, heights):
         self.board = Board(heights)
+        self.lives = 3
 
     def run(self):
         self.playing = True
@@ -27,6 +29,15 @@ class Game:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit(0)
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mx, my = pygame.mouse.get_pos()
+                mx //= TILESIZE
+                my //= TILESIZE
+                if event.button == 1:
+                #     left-click on the tile
+                    self.board.lclick(mx, my)
+
 
     def draw(self):
         self.board.draw(self.screen)
